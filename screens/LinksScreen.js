@@ -20,6 +20,12 @@ export default class LinksScreen extends React.Component {
         })),
       1000
     );
+
+    let ID_object = {
+      name: this.state.tit,
+      lyrics: this.state.lyr,
+      comments: this.state.dat
+    };
   }
   static navigationOptions = {
     title: "Links"
