@@ -8,10 +8,11 @@ export default class LinksScreen extends React.Component {
     super(props);
     this.state = {
       isShowingText: true,
-      showLyr: false,
       songObject: {},
       songsArr: [],
-      songLyrics: ""
+      songLyrics: "",
+      songName: "",
+      additionalInfo: ""
     };
     setInterval(
       () =>
@@ -20,45 +21,106 @@ export default class LinksScreen extends React.Component {
         })),
       1000
     );
-
-    let ID_object = {
-      name: this.state.tit,
-      lyrics: this.state.lyr,
-      comments: this.state.dat
-    };
   }
   static navigationOptions = {
     title: "Links"
   };
 
-  next = () => {
-    this.setState({ showLyr: true });
+  guid = () => {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    const id =
+      s4() +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      s4() +
+      s4();
+    id.toString();
+    this.setState({ songId: id }, this.submit);
   };
 
   submit = () => {
-    const songName = this.state.tit;
-    // const lyrics = this.state.lyr;
-    // this.state.songsArr.push('song: ' + songName + ' ,lyrics:' + lyrics);
-    // alert(this.state.songsArr);
+    if (!this.state.songId) {
+      this.guid();
+    } else {
+      const songId = this.state.songId;
+      const songName = this.state.songName;
+      const lyrics = this.state.songLyrics;
+      const additionalInfo = this.state.additionalInfo;
+      this.state.songsArr.push(
+        "{songId: " +
+          songId +
+          ", song: " +
+          songName +
+          ", lyrics: " +
+          lyrics +
+          ", info: " +
+          additionalInfo +
+          "}"
+      );
+      const asyncId =
+        "ID" +
+        songId +
+        "_object = {name: " +
+        songName +
+        ", lyrics: " +
+        lyrics +
+        ", additionalInfo: " +
+        additionalInfo +
+        "};";
+
+      AsyncStorage.setItem(songId.toString(), asyncId, () => {
+        AsyncStorage.getItem(songId, (err, result) => {
+          alert(result);
+        });
+      });
+
+      //alert(this.state.songsArr);
+    }
   };
 
   render() {
     return (
       <ScrollView style={styles.container}>
-        <Text>
-          {!this.state.showLyr ? "Enter your new songs name below:" : ""}
-        </Text>
+        <Text>Song:</Text>
         <TextInput
-          value={this.state.tit ? this.state.tit : ""}
+          name="songName"
+          value={this.state.tit}
           onChangeText={tit => {
-            this.setState({ tit });
+            this.setState({ songName: tit });
           }}
         />
-        <Button
-          title={!this.state.showLyr ? "next" : "update"}
-          onPress={this.next}
+        <Text>lyrics:</Text>
+        <TextInput
+          name="songLyrics"
+          value={this.state.lyr}
+          onChangeText={lyr => {
+            this.setState({ songLyrics: lyr });
+          }}
         />
-        <Text>{this.state.tit}</Text>
+        <Text>Additional info</Text>
+        <TextInput
+          name="additionalInfo"
+          value={this.state.add}
+          onChangeText={add => {
+            this.setState({ additionalInfo: add });
+          }}
+        />
+        <Button title="submit" onPress={this.submit}>
+          submitt
+        </Button>
+
+        <Text>{this.state.songName}</Text>
       </ScrollView>
     );
   }
