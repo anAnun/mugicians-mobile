@@ -6,25 +6,92 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  View
+  View,
+  AsyncStorage,
+  Button
 } from "react-native";
 import { WebBrowser } from "expo";
-
 import { MonoText } from "../components/StyledText";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null
+    title: "Home"
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      songsArr: []
+    };
+
+    setInterval(
+      () =>
+        this.setState(previousState => ({
+          isShowingText: !previousState.isShowingText
+        })),
+      1000
+    );
+  }
+
+  clearAsyncStorage = async () => {
+    AsyncStorage.clear();
+  };
+
+  item = async () => {
+    AsyncStorage.getAllKeys((err, keys) => {
+      AsyncStorage.multiGet(keys, (err, stores) => {
+        stores.map((result, i, store) => {
+          // get at each store's key/value so you can work with it
+          let key = store[i][0];
+          let value = store[i][1];
+
+          let song = this.state.songsArr;
+          song.push(value);
+          this.setState({
+            songsArr: song
+          });
+          // for (var key in this.state.songsArr) {
+          //   alert(this.state.songsArr[name]);
+          // }
+          alert(this.state.songsArr);
+        });
+      });
+    });
+
+    // try {
+    //   const value = await AsyncStorage.getAllKeys();
+    //   if (value !== null) {
+    //     // We have data!!
+
+    //     //AsyncStorage.getItem(value[i]);
+    //     this.setState({
+    //       songsArr: value
+    //     });
+    //     alert(this.state.songsArr);
+    //   }
+    // } catch (error) {
+    //   alert("error");
+    // }
+
+    // return list;
   };
 
   render() {
+    const songs = this.state.songsArr.map(song => {
+      return <Button title={song} onPress="" />;
+    });
+
     return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
+          <Text>{this.state.songsArr}</Text>
           <View style={styles.welcomeContainer}>
+            <Button title="alert dat" onPress={this.item} />
+            <Button title="DELETE ALL" onPress={this.clearAsyncStorage} />
+            {songs}
             {/* <Image
               source={
                 __DEV__
@@ -38,19 +105,19 @@ export default class HomeScreen extends React.Component {
           <View style={styles.getStartedContainer}>
             {this._maybeRenderDevelopmentModeWarning()}
 
-            <Text style={styles.getStartedText}>Get started by opening</Text>
+            {/* <Text style={styles.getStartedText}>Get started by opening</Text> */}
 
             <View
               style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
             >
-              <MonoText style={styles.codeHighlightText}>
+              {/* <MonoText style={styles.codeHighlightText}>
                 screens/HomeScreen.js
-              </MonoText>
+              </MonoText> */}
             </View>
 
-            <Text style={styles.getStartedText}>
+            {/* <Text style={styles.getStartedText}>
               r app will automatically reload.
-            </Text>
+            </Text> */}
           </View>
 
           <View style={styles.helpContainer}>
@@ -58,17 +125,17 @@ export default class HomeScreen extends React.Component {
               onPress={this._handleHelpPress}
               style={styles.helpLink}
             >
-              <Text style={styles.helpLinkText}>
+              {/* <Text style={styles.helpLinkText}>
                 Help, it didn’t automatically reload!
-              </Text>
+              </Text> */}
             </TouchableOpacity>
           </View>
         </ScrollView>
 
         <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
+          {/* <Text style={styles.tabBarInfoText}>
             This is a tab bar. You can edit it in:
-          </Text>
+          </Text> */}
 
           <View
             style={[styles.codeHighlightContainer, styles.navigationFilename]}

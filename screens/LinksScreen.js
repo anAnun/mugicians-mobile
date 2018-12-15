@@ -1,9 +1,19 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, Button, Text } from "react-native";
+import {
+  AsyncStorage,
+  ScrollView,
+  StyleSheet,
+  View,
+  Button,
+  Text
+} from "react-native";
 import { ExpoLinksView } from "@expo/samples";
 import { TextInput } from "react-native-gesture-handler";
 
 export default class LinksScreen extends React.Component {
+  static navigationOptions = {
+    title: "Create"
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -57,31 +67,41 @@ export default class LinksScreen extends React.Component {
       const songName = this.state.songName;
       const lyrics = this.state.songLyrics;
       const additionalInfo = this.state.additionalInfo;
-      this.state.songsArr.push(
-        "{songId: " +
-          songId +
-          ", song: " +
-          songName +
-          ", lyrics: " +
-          lyrics +
-          ", info: " +
-          additionalInfo +
-          "}"
-      );
-      const asyncId =
-        "ID" +
-        songId +
-        "_object = {name: " +
-        songName +
-        ", lyrics: " +
-        lyrics +
-        ", additionalInfo: " +
-        additionalInfo +
-        "};";
+      // this.state.songsArr.push(
+      //   "{songId: " +
+      //     songId +
+      //     ", song: " +
+      //     songName +
+      //     ", lyrics: " +
+      //     lyrics +
+      //     ", info: " +
+      //     additionalInfo +
+      //     "},"
+      // );
+      // const asyncId =
+      //   "ID" +
+      //   songId +
+      //   "_object = {name: " +
+      //   songName +
+      //   ", lyrics: " +
+      //   lyrics +
+      //   ", additionalInfo: " +
+      //   additionalInfo +
+      //   "};";
 
-      AsyncStorage.setItem(songId.toString(), asyncId, () => {
-        AsyncStorage.getItem(songId, (err, result) => {
-          alert(result);
+      let idO = songId + "_object";
+      let idObj = {
+        name: songName,
+        lyrics: lyrics,
+        info: additionalInfo
+      };
+
+      AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
+        AsyncStorage.getItem(idO, (err, result) => {
+          const { navigate } = this.props.navigation;
+          alert(result[1]);
+          navigate("Home");
+          //alert(result);
         });
       });
 
