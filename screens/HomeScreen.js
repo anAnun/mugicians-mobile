@@ -53,32 +53,24 @@ export default class HomeScreen extends React.Component {
           // for (var key in this.state.songsArr) {
           //   alert(this.state.songsArr[name]);
           // }
-          alert(this.state.songsArr);
+          console.log(this.state.songsArr);
         });
       });
     });
+  };
 
-    // try {
-    //   const value = await AsyncStorage.getAllKeys();
-    //   if (value !== null) {
-    //     // We have data!!
-
-    //     //AsyncStorage.getItem(value[i]);
-    //     this.setState({
-    //       songsArr: value
-    //     });
-    //     alert(this.state.songsArr);
-    //   }
-    // } catch (error) {
-    //   alert("error");
-    // }
-
-    // return list;
+  handleSongClick = data => {
+    console.log(data);
   };
 
   render() {
     const songs = this.state.songsArr.map(song => {
-      return <Button title={song} onPress="" />;
+      return (
+        <Button
+          title={JSON.parse(song).name}
+          onPress={() => this.handleSongClick(song)}
+        />
+      );
     });
 
     return (

@@ -16,6 +16,7 @@ export default class LinksScreen extends React.Component {
   };
   constructor(props) {
     super(props);
+    this._isMounted = false;
     this.state = {
       isShowingText: true,
       songObject: {},
@@ -34,6 +35,16 @@ export default class LinksScreen extends React.Component {
   }
   static navigationOptions = {
     title: "Links"
+  };
+
+  componentDidMount = () => {
+    this._isMounted = true;
+    console.log("mountlink");
+  };
+
+  componentWillUnmount = () => {
+    this._isMounted = false;
+    console.log("unmount");
   };
 
   guid = () => {
@@ -91,6 +102,7 @@ export default class LinksScreen extends React.Component {
 
       let idO = songId + "_object";
       let idObj = {
+        id: songId,
         name: songName,
         lyrics: lyrics,
         info: additionalInfo
