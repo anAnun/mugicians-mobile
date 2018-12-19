@@ -7,8 +7,8 @@ import {
 
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
-import LinksScreen from "../screens/LinksScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import EditScreen from "../screens/EditScreen";
+import CreateScreen from "../screens/CreateScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen
@@ -28,12 +28,12 @@ HomeStack.navigationOptions = {
   )
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen
+const EditStack = createStackNavigator({
+  Edit: EditScreen
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: "Create",
+EditStack.navigationOptions = {
+  tabBarLabel: "Edit",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -42,12 +42,12 @@ LinksStack.navigationOptions = {
   )
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen
+const CreateStack = createStackNavigator({
+  Create: CreateScreen
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
+CreateStack.navigationOptions = {
+  tabBarLabel: "Create",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -58,6 +58,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
-  SettingsStack
+  EditStack,
+  CreateStack
 });

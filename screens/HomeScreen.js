@@ -21,7 +21,8 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      songsArr: []
+      songsArr: [],
+      isFocused: true
     };
 
     setInterval(
@@ -33,11 +34,17 @@ export default class HomeScreen extends React.Component {
     );
   }
 
+  componentDidMount = () => {
+    this._isMounted = true;
+    this.item();
+  };
+
   clearAsyncStorage = async () => {
     AsyncStorage.clear();
   };
 
   item = async () => {
+    this.setState({ songsArr: [] });
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
         stores.map((result, i, store) => {
@@ -50,6 +57,7 @@ export default class HomeScreen extends React.Component {
           this.setState({
             songsArr: song
           });
+
           // for (var key in this.state.songsArr) {
           //   alert(this.state.songsArr[name]);
           // }
@@ -60,16 +68,26 @@ export default class HomeScreen extends React.Component {
   };
 
   handleSongClick = data => {
-    console.log(data);
+    console.log("button from home", data);
+    const { navigate } = this.props.navigation;
+    this._isMounted = false;
+    navigate("Edit", { data: data });
+  };
+
+  newSong = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Create", { data: "" });
   };
 
   render() {
     const songs = this.state.songsArr.map(song => {
       return (
-        <Button
-          title={JSON.parse(song).name}
-          onPress={() => this.handleSongClick(song)}
-        />
+        <View key={JSON.parse(song).id}>
+          <Button
+            title={JSON.parse(song).name}
+            onPress={() => this.handleSongClick(song)}
+          />
+        </View>
       );
     });
 
@@ -79,8 +97,8 @@ export default class HomeScreen extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <Text>{this.state.songsArr}</Text>
           <View style={styles.welcomeContainer}>
+            <Button title="New song" onPress={this.newSong} />
             <Button title="alert dat" onPress={this.item} />
             <Button title="DELETE ALL" onPress={this.clearAsyncStorage} />
             {songs}

@@ -10,7 +10,7 @@ import {
 import { ExpoLinksView } from "@expo/samples";
 import { TextInput } from "react-native-gesture-handler";
 
-export default class LinksScreen extends React.Component {
+export default class CreateScreen extends React.Component {
   static navigationOptions = {
     title: "Create"
   };
@@ -19,22 +19,26 @@ export default class LinksScreen extends React.Component {
     this._isMounted = false;
     this.state = {
       isShowingText: true,
+      songId: "",
       songObject: {},
       songsArr: [],
       songLyrics: "",
       songName: "",
-      additionalInfo: ""
+      additionalInfo: "",
+      resetForm: false
     };
+
     setInterval(
       () =>
         this.setState(previousState => ({
-          isShowingText: !previousState.isShowingText
+          isShowingText: !previousState.isShowingText,
+          fromHome: ""
         })),
-      1000
+      100
     );
   }
   static navigationOptions = {
-    title: "Links"
+    title: "Create"
   };
 
   componentDidMount = () => {
@@ -43,8 +47,11 @@ export default class LinksScreen extends React.Component {
   };
 
   componentWillUnmount = () => {
-    this._isMounted = false;
     console.log("unmount");
+    this.setState({
+      resetForm: true
+    });
+    this.resetForm();
   };
 
   guid = () => {
@@ -78,27 +85,6 @@ export default class LinksScreen extends React.Component {
       const songName = this.state.songName;
       const lyrics = this.state.songLyrics;
       const additionalInfo = this.state.additionalInfo;
-      // this.state.songsArr.push(
-      //   "{songId: " +
-      //     songId +
-      //     ", song: " +
-      //     songName +
-      //     ", lyrics: " +
-      //     lyrics +
-      //     ", info: " +
-      //     additionalInfo +
-      //     "},"
-      // );
-      // const asyncId =
-      //   "ID" +
-      //   songId +
-      //   "_object = {name: " +
-      //   songName +
-      //   ", lyrics: " +
-      //   lyrics +
-      //   ", additionalInfo: " +
-      //   additionalInfo +
-      //   "};";
 
       let idO = songId + "_object";
       let idObj = {
@@ -111,50 +97,67 @@ export default class LinksScreen extends React.Component {
       AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
         AsyncStorage.getItem(idO, (err, result) => {
           const { navigate } = this.props.navigation;
-          alert(result[1]);
-          navigate("Home");
-          //alert(result);
+          alert("Created!");
+          this.componentWillUnmount();
+          navigate("Home", { home: true });
         });
       });
-
-      //alert(this.state.songsArr);
     }
   };
 
-  render() {
-    return (
-      <ScrollView style={styles.container}>
-        <Text>Song:</Text>
-        <TextInput
-          name="songName"
-          value={this.state.tit}
-          onChangeText={tit => {
-            this.setState({ songName: tit });
-          }}
-        />
-        <Text>lyrics:</Text>
-        <TextInput
-          name="songLyrics"
-          value={this.state.lyr}
-          onChangeText={lyr => {
-            this.setState({ songLyrics: lyr });
-          }}
-        />
-        <Text>Additional info</Text>
-        <TextInput
-          name="additionalInfo"
-          value={this.state.add}
-          onChangeText={add => {
-            this.setState({ additionalInfo: add });
-          }}
-        />
-        <Button title="submit" onPress={this.submit}>
-          submitt
-        </Button>
+  toBeReset = () => {
+    this.resetForm();
+  };
 
-        <Text>{this.state.songName}</Text>
-      </ScrollView>
-    );
+  resetForm = () => {
+    this.setState({
+      songObject: {},
+      songId: "",
+      songsArr: [],
+      songLyrics: "",
+      songName: "",
+      additionalInfo: "",
+      resetForm: false
+    });
+  };
+
+  render() {
+    if (!this.state.resetForm) {
+      return (
+        <ScrollView style={styles.container}>
+          <Text>{this.state.fromHome}</Text>
+          <Text>Song:</Text>
+          <TextInput
+            name="songName"
+            value={this.state.tit}
+            onChangeText={tit => {
+              this.setState({ songName: tit });
+            }}
+          />
+          <Text>lyrics:</Text>
+          <TextInput
+            name="songLyrics"
+            value={this.state.lyr}
+            onChangeText={lyr => {
+              this.setState({ songLyrics: lyr });
+            }}
+          />
+          <Text>Additional info</Text>
+          <TextInput
+            name="additionalInfo"
+            value={this.state.add}
+            onChangeText={add => {
+              this.setState({ additionalInfo: add });
+            }}
+          />
+          <Button title="Submit" onPress={this.submit} />
+          <Button title="Reset Form" onPress={this.toBeReset} />
+          <Text>{this.state.songName}</Text>
+        </ScrollView>
+      );
+    } else {
+      return <Text>""</Text>;
+    }
   }
 }
 
