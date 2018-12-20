@@ -25,6 +25,11 @@ export default class HomeScreen extends React.Component {
       isFocused: true
     };
 
+    // if (!this.state.isFocused){
+    //   this.setState({isFocused: this.props.navigation.state.params.home})
+    //   console.log(this.state.isFocused)
+    // }
+
     setInterval(
       () =>
         this.setState(previousState => ({
@@ -36,6 +41,9 @@ export default class HomeScreen extends React.Component {
 
   componentDidMount = () => {
     this._isMounted = true;
+    this.item();
+  };
+  componentWillReceiveProps = () => {
     this.item();
   };
 
@@ -72,11 +80,13 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     this._isMounted = false;
     navigate("Edit", { data: data });
+    this.props.navigation.pop;
   };
 
   newSong = () => {
     const { navigate } = this.props.navigation;
     navigate("Create", { data: "" });
+    this.props.navigation.pop;
   };
 
   render() {

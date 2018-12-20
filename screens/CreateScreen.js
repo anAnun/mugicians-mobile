@@ -10,7 +10,7 @@ import {
 import { ExpoLinksView } from "@expo/samples";
 import { TextInput } from "react-native-gesture-handler";
 
-export default class CreateScreen extends React.Component {
+export default class LinksScreen extends React.Component {
   static navigationOptions = {
     title: "Create"
   };
@@ -99,7 +99,9 @@ export default class CreateScreen extends React.Component {
           const { navigate } = this.props.navigation;
           alert("Created!");
           this.componentWillUnmount();
-          navigate("Home", { home: true });
+          navigate("Home", {
+            home: true
+          });
         });
       });
     }
