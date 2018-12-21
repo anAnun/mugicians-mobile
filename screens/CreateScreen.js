@@ -3,7 +3,6 @@ import {
   AsyncStorage,
   ScrollView,
   StyleSheet,
-  View,
   Button,
   Text
 } from "react-native";
@@ -18,40 +17,24 @@ export default class LinksScreen extends React.Component {
     super(props);
     this._isMounted = false;
     this.state = {
-      isShowingText: true,
+      // isShowingText: true,
       songId: "",
-      songObject: {},
-      songsArr: [],
       songLyrics: "",
       songName: "",
       additionalInfo: "",
       resetForm: false
     };
 
-    setInterval(
-      () =>
-        this.setState(previousState => ({
-          isShowingText: !previousState.isShowingText,
-          fromHome: ""
-        })),
-      100
-    );
+    // setInterval(
+    //   () =>
+    //     this.setState(previousState => ({
+    //       isShowingText: !previousState.isShowingText
+    //     })),
+    //   100
+    // );
   }
   static navigationOptions = {
     title: "Create"
-  };
-
-  componentDidMount = () => {
-    this._isMounted = true;
-    console.log("mountlink");
-  };
-
-  componentWillUnmount = () => {
-    console.log("unmount");
-    this.setState({
-      resetForm: true
-    });
-    this.resetForm();
   };
 
   guid = () => {
@@ -98,7 +81,7 @@ export default class LinksScreen extends React.Component {
         AsyncStorage.getItem(idO, (err, result) => {
           const { navigate } = this.props.navigation;
           alert("Created!");
-          this.componentWillUnmount();
+          this.toBeReset();
           navigate("Home", {
             home: true
           });
@@ -107,20 +90,21 @@ export default class LinksScreen extends React.Component {
     }
   };
 
-  toBeReset = () => {
-    this.resetForm();
-  };
-
   resetForm = () => {
     this.setState({
-      songObject: {},
       songId: "",
-      songsArr: [],
       songLyrics: "",
       songName: "",
       additionalInfo: "",
       resetForm: false
     });
+  };
+
+  toBeReset = () => {
+    this.setState({
+      resetForm: true
+    });
+    this.resetForm();
   };
 
   render() {
@@ -131,7 +115,7 @@ export default class LinksScreen extends React.Component {
           <Text>Song:</Text>
           <TextInput
             name="songName"
-            value={this.state.tit}
+            defaultValue={this.state.tit}
             onChangeText={tit => {
               this.setState({ songName: tit });
             }}
@@ -139,7 +123,7 @@ export default class LinksScreen extends React.Component {
           <Text>lyrics:</Text>
           <TextInput
             name="songLyrics"
-            value={this.state.lyr}
+            defaultValue=""
             onChangeText={lyr => {
               this.setState({ songLyrics: lyr });
             }}
@@ -147,13 +131,12 @@ export default class LinksScreen extends React.Component {
           <Text>Additional info</Text>
           <TextInput
             name="additionalInfo"
-            value={this.state.add}
+            defaultValue={this.state.add}
             onChangeText={add => {
               this.setState({ additionalInfo: add });
             }}
           />
           <Button title="Submit" onPress={this.submit} />
-          <Button title="Reset Form" onPress={this.toBeReset} />
           <Text>{this.state.songName}</Text>
         </ScrollView>
       );

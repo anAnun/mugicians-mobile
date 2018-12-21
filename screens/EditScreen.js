@@ -17,159 +17,135 @@ export default class EditScreen extends React.Component {
   constructor(props) {
     super(props);
     this._isMounted = false;
-    const dataParse = JSON.parse(this.props.navigation.state.params.data);
-    const lyrics = dataParse.lyrics;
-    const name = dataParse.name;
-    const info = dataParse.info;
+    const data = JSON.parse(this.props.navigation.state.params.data);
 
     this.state = {
-      isShowingText: true,
-      songId: dataParse.id,
-      songObject: {},
-      songsArr: [],
-      songLyrics: lyrics,
-      lyr: lyrics,
-      songName: name,
-      tit: name,
-      additionalInfo: info,
-      add: info,
-      resetForm: false,
-      fromHome: this.props.navigation.state.params.data
+      songId: data.id,
+      songLyrics: data.lyrics,
+      songName: data.name,
+      songInfo: data.info,
+      deleteOption: false
     };
-    console.log("DATA FROM PROPS", this.state.fromHome);
-
-    setInterval(
-      () =>
-        this.setState(previousState => ({
-          isShowingText: !previousState.isShowingText,
-          fromHome: this.props.navigation.state.params.data
-        })),
-      100
-    );
   }
 
   static navigationOptions = {
     title: "Edit"
   };
 
-  componentWillUnmount = () => {
-    console.log("unmount");
+  static getDerivedStateFromProps(nextProps, prevState) {
+    const data = JSON.parse(nextProps.navigation.state.params.data);
+
+    //if the id has changed then the song has changed, update it
+    if (data.id && data.id !== prevState.songId) {
+      return {
+        songId: data.id,
+        songLyrics: data.lyrics,
+        songName: data.name,
+        songInfo: data.info
+      };
+    }
+
+    // Return null if the state hasn't changed
+    return {
+      songId: prevState.songId,
+      songLyrics: prevState.songLyrics,
+      songName: prevState.songName,
+      songInfo: prevState.songInfo
+    };
+  }
+
+  confirmDelete = () => {
     this.setState({
-      resetForm: true
+      deleteOption: true
     });
-    this.resetForm();
   };
 
-  componentWillReceiveProps = () => {
-    if (!this.state.resetForm) {
-      const d = JSON.parse(this.props.navigation.state.params.data);
-      console.log("IIIIIIIIIDF", d);
-      this.setState({
-        fromHome: this.props.navigation.state.params.data
-      });
-      this.setState({ tit: d.name, lyr: d.lyrics, add: d.info });
-    } else {
-      const d = JSON.parse(this.props.navigation.state.params.data);
-      console.log("ELSSSSSE", d);
-      this.setState({
-        tit: d.name,
-        lyr: d.lyrics,
-        add: d.info
-      });
-    }
+  deleteSong = () => {
+    this.setState({
+      deleteOption: false
+    });
+    AsyncStorage.removeItem(this.state.songId + "_object", () => {
+      const { navigate } = this.props.navigation;
+      alert("Deleted!");
+      navigate("Home", { home: true });
+    });
   };
 
   submit = () => {
-    const songId = JSON.parse(this.props.navigation.state.params.data).id;
-    const songName = this.state.tit;
-    const lyrics = this.state.lyr;
-    const additionalInfo = this.state.additionalInfo;
+    let idO = this.state.songId + "_object";
 
-    let idO = songId + "_object";
     let idObj = {
-      id: songId,
-      name: songName,
-      lyrics: lyrics,
-      info: additionalInfo
+      id: this.state.songId,
+      name: this.state.songName,
+      lyrics: this.state.songLyrics,
+      info: this.state.songInfo
     };
-    console.log("in submit:", songId);
 
     AsyncStorage.removeItem(this.props.navigation.state.params.data, () => {
       AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
         AsyncStorage.getItem(idO, (err, result) => {
           const { navigate } = this.props.navigation;
-          alert("Created!", songId);
+          alert("Created!");
           console.log("in async", idO, idObj);
-          this.componentWillUnmount();
-          this.resetForm;
           navigate("Home", { home: true });
         });
       });
     });
   };
 
-  toGoBack = () => {
-    this.resetForm();
-  };
-
-  resetForm = () => {
-    const { navigate } = this.props.navigation;
-    this.setState({
-      songObject: {},
-      songId: "",
-      songsArr: [],
-      songLyrics: "",
-      songName: "",
-      additionalInfo: "",
-      resetForm: false,
-      fromHome: "",
-      tit: "",
-      lyr: "",
-      add: ""
-    });
-    navigate("Home");
-  };
-
   render() {
-    // if (!this.state.resetForm) {
-    const dataP = JSON.parse(this.props.navigation.state.params.data);
     return (
       <ScrollView style={styles.container}>
-        <Text>{this.state.fromHome}</Text>
-        <Text>{this.props.navigation.state.params.data}</Text>
-        <Text>Song:</Text>
-        <TextInput
-          name="songName"
-          defaultValue={dataP.name}
-          onChangeText={tit => {
-            this.setState({ tit: tit });
-          }}
-        />
-        <Text>lyrics:</Text>
-        <TextInput
-          name="songLyrics"
-          defaultValue={dataP.lyrics}
-          onChangeText={lyr => {
-            this.setState({ lyr: lyr });
-          }}
-        />
+        {/* <Text>songId: {this.state.songId}</Text> */}
+        <Text>songName: {this.state.songName}</Text>
+        <Text>songLyrics: {this.state.songLyrics}</Text>
+        <Text>songInfo: {this.state.songInfo}</Text>
 
-        <Text>Additional info</Text>
-        <TextInput
-          name="additionalInfo"
-          defaultValue={dataP.info}
-          onChangeText={add => {
-            this.setState({ add: add });
-          }}
-        />
-        <Button title="Submit" onPress={this.submit} />
-        <Button title="back" onPress={this.toGoBack} />
-        <Text>{this.state.songName}</Text>
+        {!this.state.deleteOption ? (
+          <View>
+            <Text>Song:</Text>
+            <TextInput
+              name="songName"
+              value={this.state.songName}
+              onChangeText={e => {
+                this.setState({ songName: e });
+              }}
+            />
+            <Text>lyrics:</Text>
+            <TextInput
+              name="songLyrics"
+              defaultValue={this.state.songLyrics}
+              onChangeText={e => {
+                this.setState({ songLyrics: e });
+              }}
+            />
+
+            <Text>Additional info</Text>
+            <TextInput
+              name="additionalInfo"
+              defaultValue={this.state.songInfo}
+              onChangeText={e => {
+                this.setState({ songInfo: e });
+              }}
+            />
+            <Button title="Submit" onPress={this.submit} />
+            <Button title="delete" onPress={this.confirmDelete} />
+          </View>
+        ) : (
+          <View>
+            <Text>Are you sure?</Text>
+            <Text>Press DELETE to delete song</Text>
+            <Button title="Delete" onPress={this.deleteSong} />
+            <Button
+              title="Cancel"
+              onPress={() => {
+                this.setState({ deleteOption: false });
+              }}
+            />
+          </View>
+        )}
       </ScrollView>
     );
-    // } else {
-    //   return <Text>""</Text>;
-    // }
   }
 }
 

@@ -69,18 +69,17 @@ export default class HomeScreen extends React.Component {
           // for (var key in this.state.songsArr) {
           //   alert(this.state.songsArr[name]);
           // }
-          console.log(this.state.songsArr);
         });
       });
     });
   };
 
   handleSongClick = data => {
-    console.log("button from home", data);
+    console.log("data from home", data);
     const { navigate } = this.props.navigation;
-    this._isMounted = false;
+    // this._isMounted = false;
     navigate("Edit", { data: data });
-    this.props.navigation.pop;
+    // this.props.navigation.pop;
   };
 
   newSong = () => {
