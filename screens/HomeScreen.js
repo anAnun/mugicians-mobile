@@ -21,8 +21,7 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      songsArr: [],
-      isFocused: true
+      songsArr: []
     };
 
     // if (!this.state.isFocused){
@@ -30,20 +29,25 @@ export default class HomeScreen extends React.Component {
     //   console.log(this.state.isFocused)
     // }
 
-    setInterval(
-      () =>
-        this.setState(previousState => ({
-          isShowingText: !previousState.isShowingText
-        })),
-      1000
-    );
+    // setInterval(
+    //   () =>
+    //     this.setState(previousState => ({
+    //       isShowingText: !previousState.isShowingText
+    //     })),
+    //   1000
+    // );
   }
 
-  componentDidMount = () => {
-    this._isMounted = true;
+  // componentDidUpdate = () => {
+  //   this.item();
+  // };
+  componentWillReceiveProps = () => {
+    //maybe it's expo but componentDidUpdate
+    //leaves the screen blank when app is loaded
     this.item();
   };
-  componentWillReceiveProps = () => {
+
+  componentDidMount = () => {
     this.item();
   };
 
@@ -56,8 +60,6 @@ export default class HomeScreen extends React.Component {
     AsyncStorage.getAllKeys((err, keys) => {
       AsyncStorage.multiGet(keys, (err, stores) => {
         stores.map((result, i, store) => {
-          // get at each store's key/value so you can work with it
-          let key = store[i][0];
           let value = store[i][1];
 
           let song = this.state.songsArr;
@@ -65,10 +67,6 @@ export default class HomeScreen extends React.Component {
           this.setState({
             songsArr: song
           });
-
-          // for (var key in this.state.songsArr) {
-          //   alert(this.state.songsArr[name]);
-          // }
         });
       });
     });
@@ -77,9 +75,7 @@ export default class HomeScreen extends React.Component {
   handleSongClick = data => {
     console.log("data from home", data);
     const { navigate } = this.props.navigation;
-    // this._isMounted = false;
     navigate("Edit", { data: data });
-    // this.props.navigation.pop;
   };
 
   newSong = () => {
@@ -91,11 +87,13 @@ export default class HomeScreen extends React.Component {
   render() {
     const songs = this.state.songsArr.map(song => {
       return (
-        <View key={JSON.parse(song).id}>
-          <Button
-            title={JSON.parse(song).name}
-            onPress={() => this.handleSongClick(song)}
-          />
+        <View
+          style={{ color: "#c0c0c0", margin: 10 }}
+          key={JSON.parse(song).id}
+        >
+          <TouchableOpacity onPress={() => this.handleSongClick(song)}>
+            <Text style={styles.textButton}>{JSON.parse(song).name}</Text>
+          </TouchableOpacity>
         </View>
       );
     });
@@ -107,8 +105,6 @@ export default class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
-            <Button title="New song" onPress={this.newSong} />
-            <Button title="alert dat" onPress={this.item} />
             <Button title="DELETE ALL" onPress={this.clearAsyncStorage} />
             {songs}
             {/* <Image
@@ -151,19 +147,19 @@ export default class HomeScreen extends React.Component {
           </View>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          {/* <Text style={styles.tabBarInfoText}>
+        {/* <View style={styles.tabBarInfoContainer}> */}
+        {/* <Text style={styles.tabBarInfoText}>
             This is a tab bar. You can edit it in:
           </Text> */}
 
-          <View
+        {/* <View
             style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            <MonoText style={styles.codeHighlightText}>
+          > */}
+        {/* <MonoText style={styles.codeHighlightText}>
               navigation/MainTabNavigator.js
-            </MonoText>
-          </View>
-        </View>
+            </MonoText> */}
+        {/* </View> */}
+        {/* </View> */}
       </View>
     );
   }
@@ -176,12 +172,12 @@ export default class HomeScreen extends React.Component {
         </Text>
       );
 
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use
-          useful development tools. {learnMoreButton}
-        </Text>
-      );
+      // return (
+      //   <Text style={styles.developmentModeText}>
+      //     Development mode is enabled, your app will be slower but you can use
+      //     useful development tools. {learnMoreButton}
+      //   </Text>
+      // );
     } else {
       return (
         <Text style={styles.developmentModeText}>
@@ -207,11 +203,11 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
+    backgroundColor: "#000000"
   },
   developmentModeText: {
     marginBottom: 20,
-    color: "rgba(0,0,0,0.4)",
+    color: "#068587",
     fontSize: 14,
     lineHeight: 19,
     textAlign: "center"
@@ -239,7 +235,7 @@ const styles = StyleSheet.create({
     marginVertical: 7
   },
   codeHighlightText: {
-    color: "rgba(96,100,109, 0.8)"
+    color: "#068587"
   },
   codeHighlightContainer: {
     backgroundColor: "rgba(0,0,0,0.05)",
@@ -269,12 +265,17 @@ const styles = StyleSheet.create({
       }
     }),
     alignItems: "center",
-    backgroundColor: "#fbfbfb",
+    backgroundColor: "#068587",
     paddingVertical: 20
   },
   tabBarInfoText: {
     fontSize: 17,
-    color: "rgba(96,100,109, 1)",
+    color: "#068587",
+    textAlign: "center"
+  },
+  textButton: {
+    fontSize: 20,
+    color: "#c0c0c0",
     textAlign: "center"
   },
   navigationFilename: {

@@ -28,19 +28,19 @@ HomeStack.navigationOptions = {
   )
 };
 
-const EditStack = createStackNavigator({
-  Edit: EditScreen
-});
+// const EditStack = createStackNavigator({
+//   Edit: EditScreen
+// });
 
-EditStack.navigationOptions = {
-  tabBarLabel: "Edit",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-    />
-  )
-};
+// EditStack.navigationOptions = {
+//   tabBarLabel: "Edit",
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+//     />
+//   )
+// };
 
 const CreateStack = createStackNavigator({
   Create: CreateScreen
@@ -58,6 +58,6 @@ CreateStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  EditStack,
+  // EditStack,
   CreateStack
 });

@@ -4,6 +4,7 @@ import {
   ScrollView,
   StyleSheet,
   View,
+  TouchableOpacity,
   Button,
   Text
 } from "react-native";
@@ -71,6 +72,11 @@ export default class EditScreen extends React.Component {
     });
   };
 
+  goBack = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Home");
+  };
+
   submit = () => {
     let idO = this.state.songId + "_object";
 
@@ -85,7 +91,7 @@ export default class EditScreen extends React.Component {
       AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
         AsyncStorage.getItem(idO, (err, result) => {
           const { navigate } = this.props.navigation;
-          alert("Created!");
+          alert("Updated!");
           console.log("in async", idO, idObj);
           navigate("Home", { home: true });
         });
@@ -96,46 +102,110 @@ export default class EditScreen extends React.Component {
   render() {
     return (
       <ScrollView style={styles.container}>
-        {/* <Text>songId: {this.state.songId}</Text> */}
-        <Text>songName: {this.state.songName}</Text>
-        <Text>songLyrics: {this.state.songLyrics}</Text>
-        <Text>songInfo: {this.state.songInfo}</Text>
-
+        <View
+          style={{
+            color: "#c0c0c0",
+            width: 100,
+            marginTop: 20,
+            alignSelf: "flex-end"
+          }}
+        >
+          <TouchableOpacity onPress={this.goBack} style={styles.submitButton}>
+            <Text style={styles.backButton}>Back</Text>
+          </TouchableOpacity>
+        </View>
         {!this.state.deleteOption ? (
           <View>
-            <Text>Song:</Text>
+            {this.state.songName ? (
+              <Text style={styles.text}>Song:</Text>
+            ) : (
+              <Text style={styles.textValidation}>
+                Song: Please enter a song name!
+              </Text>
+            )}
             <TextInput
               name="songName"
+              style={styles.textInputSong}
               value={this.state.songName}
               onChangeText={e => {
                 this.setState({ songName: e });
               }}
             />
-            <Text>lyrics:</Text>
+            <Text style={styles.text}>Lyrics:</Text>
             <TextInput
               name="songLyrics"
+              multiline={true}
               defaultValue={this.state.songLyrics}
+              style={styles.textInputLyrics}
               onChangeText={e => {
                 this.setState({ songLyrics: e });
               }}
             />
 
-            <Text>Additional info</Text>
+            <Text style={styles.text}>Additional info</Text>
             <TextInput
               name="additionalInfo"
+              multiline={true}
+              style={styles.textInputLyrics}
               defaultValue={this.state.songInfo}
               onChangeText={e => {
                 this.setState({ songInfo: e });
               }}
             />
-            <Button title="Submit" onPress={this.submit} />
-            <Button title="delete" onPress={this.confirmDelete} />
+            <View
+              style={{
+                color: "#c0c0c0",
+                width: 150,
+                marginTop: 20,
+                alignSelf: "flex-end"
+              }}
+            >
+              <TouchableOpacity
+                onPress={this.submit}
+                style={styles.submitButton}
+              >
+                <Text style={styles.textButton}>Update</Text>
+              </TouchableOpacity>
+            </View>
+
+            <View
+              style={{
+                color: "#c0c0c0",
+                width: 150,
+                marginTop: 20,
+                alignSelf: "flex-end"
+              }}
+            >
+              <TouchableOpacity
+                onPress={this.confirmDelete}
+                style={styles.deleteButton}
+              >
+                <Text style={styles.textButton}>Delete</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         ) : (
-          <View>
-            <Text>Are you sure?</Text>
-            <Text>Press DELETE to delete song</Text>
-            <Button title="Delete" onPress={this.deleteSong} />
+          <View style={styles.confirmContainer}>
+            <Text style={styles.textValidation}>Are you sure?</Text>
+            <Text style={styles.textValidation}>
+              Press DELETE to delete song
+            </Text>
+            <View
+              style={{
+                color: "#c0c0c0",
+                width: 150,
+                marginTop: 20,
+                marginBottom: 30,
+                alignSelf: "flex-end"
+              }}
+            >
+              <TouchableOpacity
+                onPress={this.deleteSong}
+                style={styles.deleteButton}
+              >
+                <Text style={styles.textButton}>Delete</Text>
+              </TouchableOpacity>
+            </View>
             <Button
               title="Cancel"
               onPress={() => {
@@ -150,9 +220,53 @@ export default class EditScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  backButton: {
+    fontSize: 15,
+    color: "#c0c0c0",
+    textAlign: "center"
+  },
+  confirmContainer: {
+    marginTop: 30
+  },
   container: {
     flex: 1,
-    paddingTop: 15,
-    backgroundColor: "#fff"
+    paddingTop: 35,
+    backgroundColor: "#000000"
+  },
+  deleteButton: {
+    backgroundColor: "#ED553B",
+    padding: 10,
+    fontSize: 17
+  },
+  submitButton: {
+    backgroundColor: "#068587",
+    padding: 10,
+    fontSize: 17
+  },
+  text: {
+    fontSize: 20,
+    color: "#F0F0F0"
+  },
+  textButton: {
+    fontSize: 20,
+    color: "#c0c0c0",
+    textAlign: "center"
+  },
+  textInputLyrics: {
+    borderColor: "#068587",
+    borderWidth: 2,
+    backgroundColor: "#C0C0C0",
+    margin: 10
+  },
+  textInputSong: {
+    borderColor: "#068587",
+    borderWidth: 2,
+    backgroundColor: "#C0C0C0",
+    width: 150,
+    margin: 10
+  },
+  textValidation: {
+    color: "#ED553B",
+    fontSize: 20
   }
 });
