@@ -61,9 +61,18 @@ export default class HomeScreen extends React.Component {
       AsyncStorage.multiGet(keys, (err, stores) => {
         stores.map((result, i, store) => {
           let value = store[i][1];
-
+          let key = store[i][0];
+          // const sorted = value.sort(function(a, b) {
+          //   if (a.name < b.name) return -1;
+          //   if (a.name > b.name) return 1;
+          //   return 0;
+          // });
+          console.log(key);
+          console.log(value);
           let song = this.state.songsArr;
           song.push(value);
+          // console.log(JSON.parse(value));
+
           this.setState({
             songsArr: song
           });
@@ -172,12 +181,12 @@ export default class HomeScreen extends React.Component {
         </Text>
       );
 
-      // return (
-      //   <Text style={styles.developmentModeText}>
-      //     Development mode is enabled, your app will be slower but you can use
-      //     useful development tools. {learnMoreButton}
-      //   </Text>
-      // );
+      return (
+        <Text style={styles.developmentModeText}>
+          Development mode is enabled, your app will be slower but you can use
+          useful development tools. {learnMoreButton}
+        </Text>
+      );
     } else {
       return (
         <Text style={styles.developmentModeText}>

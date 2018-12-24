@@ -65,11 +65,15 @@ export default class EditScreen extends React.Component {
     this.setState({
       deleteOption: false
     });
-    AsyncStorage.removeItem(this.state.songId + "_object", () => {
-      const { navigate } = this.props.navigation;
-      alert("Deleted!");
-      navigate("Home", { home: true });
-    });
+    AsyncStorage.removeItem(
+      this.state.songName + this.state.songId + "_object",
+
+      () => {
+        const { navigate } = this.props.navigation;
+        alert("Deleted!");
+        navigate("Home", { home: true });
+      }
+    );
   };
 
   goBack = () => {
@@ -81,22 +85,26 @@ export default class EditScreen extends React.Component {
     let idO = this.state.songId + "_object";
 
     let idObj = {
-      id: this.state.songId,
       name: this.state.songName,
+      id: this.state.songId,
       lyrics: this.state.songLyrics,
       info: this.state.songInfo
     };
 
-    AsyncStorage.removeItem(this.props.navigation.state.params.data, () => {
-      AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
-        AsyncStorage.getItem(idO, (err, result) => {
-          const { navigate } = this.props.navigation;
-          alert("Updated!");
-          console.log("in async", idO, idObj);
-          navigate("Home", { home: true });
+    AsyncStorage.removeItem(
+      this.props.navigation.state.params.data.name +
+        this.props.navigation.state.params.data.id +
+        "_object",
+      () => {
+        AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
+          AsyncStorage.getItem(idO, (err, result) => {
+            const { navigate } = this.props.navigation;
+            alert("Updated!");
+            navigate("Home", { home: true });
+          });
         });
-      });
-    });
+      }
+    );
   };
 
   render() {

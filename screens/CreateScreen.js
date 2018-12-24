@@ -71,10 +71,10 @@ export default class LinksScreen extends React.Component {
       const lyrics = this.state.songLyrics;
       const additionalInfo = this.state.additionalInfo;
 
-      let idO = songId + "_object";
+      let idO = songName + songId + "_object";
       let idObj = {
-        id: songId,
         name: songName,
+        id: songId,
         lyrics: lyrics,
         info: additionalInfo
       };
@@ -161,7 +161,6 @@ export default class LinksScreen extends React.Component {
             </TouchableOpacity>
             {/* <Button /> */}
           </View>
-          <Text>{this.state.songName}</Text>
         </ScrollView>
       );
     } else {
