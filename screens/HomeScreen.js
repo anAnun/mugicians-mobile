@@ -1,14 +1,14 @@
 import React from "react";
 import {
   Image,
+  Button,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  AsyncStorage,
-  Button
+  AsyncStorage
 } from "react-native";
 import { WebBrowser } from "expo";
 import { MonoText } from "../components/StyledText";
@@ -37,10 +37,6 @@ export default class HomeScreen extends React.Component {
     //   1000
     // );
   }
-
-  // componentDidUpdate = () => {
-  //   this.item();
-  // };
   componentWillReceiveProps = () => {
     //maybe it's expo but componentDidUpdate
     //leaves the screen blank when app is loaded
@@ -62,17 +58,9 @@ export default class HomeScreen extends React.Component {
         stores.map((result, i, store) => {
           let value = store[i][1];
           let key = store[i][0];
-          // const sorted = value.sort(function(a, b) {
-          //   if (a.name < b.name) return -1;
-          //   if (a.name > b.name) return 1;
-          //   return 0;
-          // });
-          console.log(key);
-          console.log(value);
           let song = this.state.songsArr;
           song.push(value);
-          // console.log(JSON.parse(value));
-
+          console.log(store);
           this.setState({
             songsArr: song
           });
@@ -82,7 +70,6 @@ export default class HomeScreen extends React.Component {
   };
 
   handleSongClick = data => {
-    console.log("data from home", data);
     const { navigate } = this.props.navigation;
     navigate("Edit", { data: data });
   };
@@ -114,6 +101,14 @@ export default class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
+            {this.state.songsArr.length < 1 && (
+              <View style={styles.getStartedText}>
+                <Text style={styles.codeHighlightText}>
+                  Welcome to Mugicians! Where you can organize all of your song
+                  ideas!
+                </Text>
+              </View>
+            )}
             <Button title="DELETE ALL" onPress={this.clearAsyncStorage} />
             {songs}
             {/* <Image
@@ -125,101 +120,23 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             /> */}
           </View>
-
-          <View style={styles.getStartedContainer}>
-            {this._maybeRenderDevelopmentModeWarning()}
-
-            {/* <Text style={styles.getStartedText}>Get started by opening</Text> */}
-
-            <View
-              style={[styles.codeHighlightContainer, styles.homeScreenFilename]}
-            >
-              {/* <MonoText style={styles.codeHighlightText}>
-                screens/HomeScreen.js
-              </MonoText> */}
-            </View>
-
-            {/* <Text style={styles.getStartedText}>
-              r app will automatically reload.
-            </Text> */}
-          </View>
-
-          <View style={styles.helpContainer}>
-            <TouchableOpacity
-              onPress={this._handleHelpPress}
-              style={styles.helpLink}
-            >
-              {/* <Text style={styles.helpLinkText}>
-                Help, it didn’t automatically reload!
-              </Text> */}
-            </TouchableOpacity>
-          </View>
         </ScrollView>
-
-        {/* <View style={styles.tabBarInfoContainer}> */}
-        {/* <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text> */}
-
-        {/* <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          > */}
-        {/* <MonoText style={styles.codeHighlightText}>
-              navigation/MainTabNavigator.js
-            </MonoText> */}
-        {/* </View> */}
-        {/* </View> */}
+        {this.state.songsArr.length < 1 && (
+          <View style={styles.tabBarInfoContainer}>
+            <Text style={styles.tabBarInfoText}>
+              Press Create to get started!
+            </Text>
+          </View>
+        )}
       </View>
     );
   }
-
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
-
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use
-          useful development tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync(
-      "https://docs.expo.io/versions/latest/guides/development-mode"
-    );
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      "https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes"
-    );
-  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000000"
-  },
-  developmentModeText: {
-    marginBottom: 20,
-    color: "#068587",
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: "center"
   },
   contentContainer: {
     paddingTop: 30
@@ -229,27 +146,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10
-  },
-  getStartedContainer: {
-    alignItems: "center",
-    marginHorizontal: 50
-  },
-  homeScreenFilename: {
-    marginVertical: 7
-  },
+  // welcomeImage: {
+  //   width: 100,
+  //   height: 80,
+  //   resizeMode: "contain",
+  //   marginTop: 3,
+  //   marginLeft: -10
+  // },
   codeHighlightText: {
-    color: "#068587"
-  },
-  codeHighlightContainer: {
-    backgroundColor: "rgba(0,0,0,0.05)",
-    borderRadius: 3,
-    paddingHorizontal: 4
+    color: "#068587",
+    margin: 20,
+    fontSize: 18
   },
   getStartedText: {
     fontSize: 17,
@@ -278,27 +185,13 @@ const styles = StyleSheet.create({
     paddingVertical: 20
   },
   tabBarInfoText: {
-    fontSize: 17,
-    color: "#068587",
+    fontSize: 20,
+    color: "#F3B134",
     textAlign: "center"
   },
   textButton: {
     fontSize: 20,
     color: "#c0c0c0",
     textAlign: "center"
-  },
-  navigationFilename: {
-    marginTop: 5
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: "center"
-  },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: "#2e78b7"
   }
 });

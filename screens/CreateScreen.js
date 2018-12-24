@@ -65,7 +65,7 @@ export default class LinksScreen extends React.Component {
   submit = () => {
     if (!this.state.songId) {
       this.guid();
-    } else {
+    } else if (this.state.songName) {
       const songId = this.state.songId;
       const songName = this.state.songName;
       const lyrics = this.state.songLyrics;
@@ -89,6 +89,8 @@ export default class LinksScreen extends React.Component {
           });
         });
       });
+    } else {
+      alert("Song Name Cannot Be Blank!");
     }
   };
 

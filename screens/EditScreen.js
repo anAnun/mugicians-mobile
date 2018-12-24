@@ -65,15 +65,13 @@ export default class EditScreen extends React.Component {
     this.setState({
       deleteOption: false
     });
-    AsyncStorage.removeItem(
-      this.state.songName + this.state.songId + "_object",
-
-      () => {
-        const { navigate } = this.props.navigation;
-        alert("Deleted!");
-        navigate("Home", { home: true });
-      }
-    );
+    const data = JSON.parse(this.props.navigation.state.params.data);
+    AsyncStorage.removeItem(data.name + data.id + "_object", () => {
+      const { navigate } = this.props.navigation;
+      alert("Deleted!");
+      console.log("WHATTTTT", data.id);
+      navigate("Home", { home: true });
+    });
   };
 
   goBack = () => {
@@ -81,30 +79,60 @@ export default class EditScreen extends React.Component {
     navigate("Home");
   };
 
+  deleteBeforePost = () => {
+    if (!this.state.songName) {
+      alert("Song Name Cannot Be Blank!");
+    }
+    if (this.state.songName.length > 0) {
+      const data = JSON.parse(this.props.navigation.state.params.data);
+      AsyncStorage.removeItem(
+        data.name + data.id + "_object",
+        this.setState({ goodToGo: true }, this.guid())
+      );
+    }
+  };
+
+  //first call  then call delete item, then guid, then set item
+  guid = () => {
+    function s4() {
+      return Math.floor((1 + Math.random()) * 0x10000)
+        .toString(16)
+        .substring(1);
+    }
+    const id =
+      s4() +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      "-" +
+      s4() +
+      s4() +
+      s4();
+    id.toString();
+    this.setState({ newSongId: id }, this.submit);
+  };
+
   submit = () => {
-    let idO = this.state.songId + "_object";
+    let idO = this.state.songName + this.state.newSongId + "_object";
 
     let idObj = {
       name: this.state.songName,
-      id: this.state.songId,
+      id: this.state.newSongId,
       lyrics: this.state.songLyrics,
       info: this.state.songInfo
     };
 
-    AsyncStorage.removeItem(
-      this.props.navigation.state.params.data.name +
-        this.props.navigation.state.params.data.id +
-        "_object",
-      () => {
-        AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
-          AsyncStorage.getItem(idO, (err, result) => {
-            const { navigate } = this.props.navigation;
-            alert("Updated!");
-            navigate("Home", { home: true });
-          });
-        });
-      }
-    );
+    AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
+      AsyncStorage.getItem(idO, (err, result) => {
+        const { navigate } = this.props.navigation;
+        alert("Updated!");
+        navigate("Home", { home: true });
+      });
+    });
   };
 
   render() {
@@ -169,7 +197,7 @@ export default class EditScreen extends React.Component {
               }}
             >
               <TouchableOpacity
-                onPress={this.submit}
+                onPress={this.deleteBeforePost}
                 style={styles.submitButton}
               >
                 <Text style={styles.textButton}>Update</Text>
