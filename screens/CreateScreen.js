@@ -155,7 +155,8 @@ export default class LinksScreen extends React.Component {
               color: "#c0c0c0",
               width: 150,
               marginTop: 20,
-              alignSelf: "flex-end"
+              alignSelf: "flex-end",
+              marginBottom: 300
             }}
           >
             <TouchableOpacity onPress={this.submit} style={styles.submitButton}>
