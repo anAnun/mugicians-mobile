@@ -39,6 +39,15 @@ export default class LinksScreen extends React.Component {
     title: "Create"
   };
 
+  componentDidMount() {
+    /* Evidently, resizing triggers something that makes copy-paste work.
+     * Timeout is mandatory for this hack, doesn't work otherwise.
+     */
+    setTimeout(() => {
+      this.setState({ testWidth: "100%" });
+    }, 100);
+  }
+
   guid = () => {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)

@@ -55,6 +55,15 @@ export default class EditScreen extends React.Component {
     };
   }
 
+  componentDidMount() {
+    /* Evidently, resizing triggers something that makes copy-paste work.
+     * Timeout is mandatory for this hack, doesn't work otherwise.
+     */
+    setTimeout(() => {
+      this.setState({ testWidth: "100%" });
+    }, 100);
+  }
+
   confirmDelete = () => {
     this.setState({
       deleteOption: true
