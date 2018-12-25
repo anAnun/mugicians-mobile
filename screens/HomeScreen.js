@@ -47,9 +47,9 @@ export default class HomeScreen extends React.Component {
     this.item();
   };
 
-  clearAsyncStorage = async () => {
-    AsyncStorage.clear();
-  };
+  // clearAsyncStorage = async () => {
+  //   AsyncStorage.clear();
+  // };
 
   item = async () => {
     this.setState({ songsArr: [] });
@@ -60,7 +60,6 @@ export default class HomeScreen extends React.Component {
           let key = store[i][0];
           let song = this.state.songsArr;
           song.push(value);
-          console.log(store);
           this.setState({
             songsArr: song
           });
@@ -109,7 +108,7 @@ export default class HomeScreen extends React.Component {
                 </Text>
               </View>
             )}
-            <Button title="DELETE ALL" onPress={this.clearAsyncStorage} />
+            {/* <Button title="DELETE ALL" onPress={this.clearAsyncStorage} /> */}
             {songs}
             {/* <Image
               source={
