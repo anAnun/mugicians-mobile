@@ -25,7 +25,9 @@ export default class EditScreen extends React.Component {
       songLyrics: data.lyrics,
       songName: data.name,
       songInfo: data.info,
-      deleteOption: false
+      deleteOption: false,
+      testWidth: "99%",
+      testWidthSong: "49%"
     };
   }
 
@@ -60,7 +62,7 @@ export default class EditScreen extends React.Component {
      * Timeout is mandatory for this hack, doesn't work otherwise.
      */
     setTimeout(() => {
-      this.setState({ testWidth: "100%" });
+      this.setState({ testWidth: "100%", testWidthSong: "50%" });
     }, 100);
   }
 
@@ -170,7 +172,12 @@ export default class EditScreen extends React.Component {
             )}
             <TextInput
               name="songName"
-              style={styles.textInputSong}
+              style={{
+                borderColor: "#068587",
+                borderWidth: 2,
+                backgroundColor: "#C0C0C0",
+                width: this.state.testWidthSong
+              }}
               value={this.state.songName}
               onChangeText={e => {
                 this.setState({ songName: e });
@@ -181,7 +188,12 @@ export default class EditScreen extends React.Component {
               name="songLyrics"
               multiline={true}
               defaultValue={this.state.songLyrics}
-              style={styles.textInputLyrics}
+              style={{
+                width: this.state.testWidth,
+                borderColor: "#068587",
+                borderWidth: 2,
+                backgroundColor: "#C0C0C0"
+              }}
               onChangeText={e => {
                 this.setState({ songLyrics: e });
               }}
@@ -191,7 +203,12 @@ export default class EditScreen extends React.Component {
             <TextInput
               name="additionalInfo"
               multiline={true}
-              style={styles.textInputLyrics}
+              style={{
+                width: this.state.testWidth,
+                borderColor: "#068587",
+                borderWidth: 2,
+                backgroundColor: "#C0C0C0"
+              }}
               defaultValue={this.state.songInfo}
               onChangeText={e => {
                 this.setState({ songInfo: e });
@@ -297,12 +314,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#c0c0c0",
     textAlign: "center"
-  },
-  textInputLyrics: {
-    borderColor: "#068587",
-    borderWidth: 2,
-    backgroundColor: "#C0C0C0",
-    margin: 10
   },
   textInputSong: {
     borderColor: "#068587",

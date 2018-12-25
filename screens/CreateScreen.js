@@ -24,7 +24,9 @@ export default class LinksScreen extends React.Component {
       songLyrics: "",
       songName: "",
       additionalInfo: "",
-      resetForm: false
+      resetForm: false,
+      testWidth: "99%",
+      testWidthSong: "49%"
     };
 
     // setInterval(
@@ -44,7 +46,7 @@ export default class LinksScreen extends React.Component {
      * Timeout is mandatory for this hack, doesn't work otherwise.
      */
     setTimeout(() => {
-      this.setState({ testWidth: "100%" });
+      this.setState({ testWidth: "100%", testWidthSong: "50%" });
     }, 100);
   }
 
@@ -135,7 +137,12 @@ export default class LinksScreen extends React.Component {
           )}
           <TextInput
             name="songName"
-            style={styles.textInputSong}
+            style={{
+              borderColor: "#068587",
+              borderWidth: 2,
+              backgroundColor: "#C0C0C0",
+              width: this.state.testWidthSong
+            }}
             onChangeText={e => {
               this.setState({ songName: e });
             }}
@@ -145,7 +152,12 @@ export default class LinksScreen extends React.Component {
           <TextInput
             name="songLyrics"
             multiline={true}
-            style={styles.textInputLyrics}
+            style={{
+              width: this.state.testWidth,
+              borderColor: "#068587",
+              borderWidth: 2,
+              backgroundColor: "#C0C0C0"
+            }}
             onChangeText={e => {
               this.setState({ songLyrics: e });
             }}
@@ -154,7 +166,12 @@ export default class LinksScreen extends React.Component {
           <TextInput
             name="additionalInfo:"
             multiline={true}
-            style={styles.textInputLyrics}
+            style={{
+              width: this.state.testWidth,
+              borderColor: "#068587",
+              borderWidth: 2,
+              backgroundColor: "#C0C0C0"
+            }}
             onChangeText={e => {
               this.setState({ additionalInfo: e });
             }}
@@ -205,12 +222,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#c0c0c0",
     textAlign: "center"
-  },
-  textInputLyrics: {
-    borderColor: "#068587",
-    borderWidth: 2,
-    backgroundColor: "#C0C0C0",
-    margin: 10
   },
   textInputSong: {
     borderColor: "#068587",
