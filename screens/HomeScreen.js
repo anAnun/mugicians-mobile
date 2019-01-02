@@ -12,6 +12,10 @@ import {
 } from "react-native";
 import { WebBrowser } from "expo";
 import { MonoText } from "../components/StyledText";
+import {
+  handleAndroidBackButton,
+  exitAlert
+} from "./modules/androidBackButton";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -45,6 +49,7 @@ export default class HomeScreen extends React.Component {
 
   componentDidMount = () => {
     this.item();
+    handleAndroidBackButton(exitAlert);
   };
 
   // clearAsyncStorage = async () => {
