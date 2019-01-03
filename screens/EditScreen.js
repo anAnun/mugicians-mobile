@@ -8,7 +8,6 @@ import {
   Button,
   Text
 } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
 import { TextInput } from "react-native-gesture-handler";
 
 export default class EditScreen extends React.Component {
@@ -37,8 +36,6 @@ export default class EditScreen extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const data = JSON.parse(nextProps.navigation.state.params.data);
-
-    //if the id has changed then the song has changed, update it
     if (data.id && data.id !== prevState.songId) {
       return {
         songId: data.id,
@@ -47,8 +44,6 @@ export default class EditScreen extends React.Component {
         songInfo: data.info
       };
     }
-
-    // Return null if the state hasn't changed
     return {
       songId: prevState.songId,
       songLyrics: prevState.songLyrics,
@@ -58,9 +53,6 @@ export default class EditScreen extends React.Component {
   }
 
   componentDidMount() {
-    /* Evidently, resizing triggers something that makes copy-paste work.
-     * Timeout is mandatory for this hack, doesn't work otherwise.
-     */
     setTimeout(() => {
       this.setState({ testWidth: "100%", testWidthSong: "50%" });
     }, 100);
@@ -103,7 +95,6 @@ export default class EditScreen extends React.Component {
     }
   };
 
-  //first call  then call delete item, then guid, then set item
   guid = () => {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)

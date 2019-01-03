@@ -4,7 +4,6 @@ import {
   createStackNavigator,
   createBottomTabNavigator
 } from "react-navigation";
-
 import TabBarIcon from "../components/TabBarIcon";
 import HomeScreen from "../screens/HomeScreen";
 import EditScreen from "../screens/EditScreen";
@@ -28,20 +27,6 @@ HomeStack.navigationOptions = {
   )
 };
 
-// const EditStack = createStackNavigator({
-//   Edit: EditScreen
-// });
-
-// EditStack.navigationOptions = {
-//   tabBarLabel: "Edit",
-//   tabBarIcon: ({ focused }) => (
-//     <TabBarIcon
-//       focused={focused}
-//       name={Platform.OS === "ios" ? "ios-link" : "md-link"}
-//     />
-//   )
-// };
-
 const CreateStack = createStackNavigator({
   Create: CreateScreen
 });
@@ -58,6 +43,5 @@ CreateStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  // EditStack,
   CreateStack
 });

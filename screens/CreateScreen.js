@@ -4,11 +4,9 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Button,
   Text,
   View
 } from "react-native";
-import { ExpoLinksView } from "@expo/samples";
 import { TextInput } from "react-native-gesture-handler";
 
 export default class LinksScreen extends React.Component {
@@ -28,14 +26,6 @@ export default class LinksScreen extends React.Component {
       testWidth: "99%",
       testWidthSong: "49%"
     };
-
-    // setInterval(
-    //   () =>
-    //     this.setState(previousState => ({
-    //       isShowingText: !previousState.isShowingText
-    //     })),
-    //   100
-    // );
   }
   static navigationOptions = {
     title: "Create"
@@ -188,7 +178,6 @@ export default class LinksScreen extends React.Component {
             <TouchableOpacity onPress={this.submit} style={styles.submitButton}>
               <Text style={styles.textButton}>Submit</Text>
             </TouchableOpacity>
-            {/* <Button /> */}
           </View>
         </ScrollView>
       );

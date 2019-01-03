@@ -2,20 +2,18 @@ import React from "react";
 import {
   Image,
   Button,
+  Alert,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  AsyncStorage
+  AsyncStorage,
+  BackHandler
 } from "react-native";
 import { WebBrowser } from "expo";
 import { MonoText } from "../components/StyledText";
-import {
-  handleAndroidBackButton,
-  exitAlert
-} from "./modules/androidBackButton";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -45,11 +43,46 @@ export default class HomeScreen extends React.Component {
     //maybe it's expo but componentDidUpdate
     //leaves the screen blank when app is loaded
     this.item();
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
   };
 
   componentDidMount = () => {
     this.item();
-    handleAndroidBackButton(exitAlert);
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  };
+
+  handleBackPress = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Home");
+    return true;
+
+    // Alert.alert(
+    //   "Exit App",
+    //   "Exiting the application?",
+    //   [
+    //     {
+    //       text: "Cancel",
+    //       // onPress: () => {
+    //       //   BackHandler.removeEventListener(
+    //       //     "hardwareBackPress",
+    //       //     this.handleBackPress
+    //       //   );
+    //       // },
+    //       onPress: () => {
+    //         null;
+    //       },
+    //       style: "cancel"
+    //     },
+    //     {
+    //       text: "OK",
+    //       onPress: () => BackHandler.exitApp()
+    //     }
+    //   ],
+    //   {
+    //     cancelable: false
+    //   }
+    // );
+    // return true;
   };
 
   // clearAsyncStorage = async () => {
