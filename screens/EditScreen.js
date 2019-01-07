@@ -7,7 +7,8 @@ import {
   View,
   TouchableOpacity,
   Button,
-  Text
+  Text,
+  ToastAndroid
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
 
@@ -132,8 +133,7 @@ export default class EditScreen extends React.Component {
   };
 
   handleBackPress = () => {
-    const { navigate } = this.props.navigation;
-    navigate.goBack(null);
+    ToastAndroid.show("", ToastAndroid.SHORT);
     return true;
   };
 
