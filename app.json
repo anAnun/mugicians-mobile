@@ -6,7 +6,9 @@
     "sdkVersion": "31.0.0",
     "android": {
       "package": "com.ananun.mugicians",
-      "permissions":[""]
+      "permissions": [
+        ""
+      ]
     },
     "platforms": [
       "ios",
@@ -29,7 +31,7 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "A song writer's notebook. Organize your song ideas and thoughts",
+    "description": "A songwriter notebook. Organize your song ideas and thoughts",
     "githubUrl": "https://github.com/anAnun/mugicians-mobile"
   }
 }

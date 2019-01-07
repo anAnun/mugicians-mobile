@@ -39,16 +39,17 @@ export default class HomeScreen extends React.Component {
     //   1000
     // );
   }
-  componentWillReceiveProps = () => {
-    //maybe it's expo but componentDidUpdate
-    //leaves the screen blank when app is loaded
-    this.item();
-    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
-  };
 
   componentDidMount = () => {
     this.item();
     BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  };
+
+  componentWillReceiveProps = () => {
+    //maybe it's expo but componentDidUpdate
+    //leaves the screen blank when app is loaded
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+    this.item();
   };
 
   handleBackPress = () => {
@@ -107,6 +108,7 @@ export default class HomeScreen extends React.Component {
   };
 
   handleSongClick = data => {
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
     const { navigate } = this.props.navigation;
     navigate("Edit", { data: data });
   };

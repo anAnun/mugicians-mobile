@@ -1,6 +1,7 @@
 import React from "react";
 import {
   AsyncStorage,
+  BackHandler,
   ScrollView,
   StyleSheet,
   View,
@@ -25,6 +26,7 @@ export default class EditScreen extends React.Component {
       songName: data.name,
       songInfo: data.info,
       deleteOption: false,
+      goBackOption: false,
       testWidth: "99%",
       testWidthSong: "49%"
     };
@@ -36,6 +38,7 @@ export default class EditScreen extends React.Component {
 
   static getDerivedStateFromProps(nextProps, prevState) {
     const data = JSON.parse(nextProps.navigation.state.params.data);
+
     if (data.id && data.id !== prevState.songId) {
       return {
         songId: data.id,
@@ -58,10 +61,22 @@ export default class EditScreen extends React.Component {
     }, 100);
   }
 
+  componentWillReceiveProps = () => {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
+  };
+
   confirmDelete = () => {
     this.setState({
       deleteOption: true
     });
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
+  };
+
+  confirmGoBack = () => {
+    this.setState({
+      goBackOption: true
+    });
+    BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
   };
 
   deleteSong = () => {
@@ -72,14 +87,8 @@ export default class EditScreen extends React.Component {
     AsyncStorage.removeItem(data.name + data.id + "_object", () => {
       const { navigate } = this.props.navigation;
       alert("Deleted!");
-      console.log("WHATTTTT", data.id);
       navigate("Home", { home: true });
     });
-  };
-
-  goBack = () => {
-    const { navigate } = this.props.navigation;
-    navigate("Home");
   };
 
   deleteBeforePost = () => {
@@ -94,7 +103,10 @@ export default class EditScreen extends React.Component {
       );
     }
   };
-
+  goBack = () => {
+    const { navigate } = this.props.navigation;
+    navigate("Home", { home: true });
+  };
   guid = () => {
     function s4() {
       return Math.floor((1 + Math.random()) * 0x10000)
@@ -116,6 +128,13 @@ export default class EditScreen extends React.Component {
       s4();
     id.toString();
     this.setState({ newSongId: id }, this.submit);
+  };
+
+  handleBackPress = () => {
+    this.setState({
+      backDisable: true
+    });
+    return true;
   };
 
   submit = () => {
@@ -148,11 +167,14 @@ export default class EditScreen extends React.Component {
             alignSelf: "flex-end"
           }}
         >
-          <TouchableOpacity onPress={this.goBack} style={styles.submitButton}>
+          <TouchableOpacity
+            onPress={this.confirmGoBack}
+            style={styles.submitButton}
+          >
             <Text style={styles.backButton}>Back</Text>
           </TouchableOpacity>
         </View>
-        {!this.state.deleteOption ? (
+        {!this.state.deleteOption & !this.state.goBackOption ? (
           <View>
             {this.state.songName ? (
               <Text style={styles.text}>Song:</Text>
@@ -238,7 +260,7 @@ export default class EditScreen extends React.Component {
               </TouchableOpacity>
             </View>
           </View>
-        ) : (
+        ) : this.state.deleteOption ? (
           <View style={styles.confirmContainer}>
             <Text style={styles.textValidation}>Are you sure?</Text>
             <Text style={styles.textValidation}>
@@ -267,6 +289,39 @@ export default class EditScreen extends React.Component {
               }}
             />
           </View>
+        ) : (
+          this.state.goBackOption && (
+            <View style={styles.confirmContainer}>
+              <Text style={styles.textValidation}>
+                All unsaved progress will be lost if you go back
+              </Text>
+              <Text style={styles.textValidation}>
+                Press GO BACK to go back to home
+              </Text>
+              <View
+                style={{
+                  color: "#c0c0c0",
+                  width: 150,
+                  marginTop: 20,
+                  marginBottom: 30,
+                  alignSelf: "flex-end"
+                }}
+              >
+                <TouchableOpacity
+                  onPress={this.goBack}
+                  style={styles.deleteButton}
+                >
+                  <Text style={styles.textButton}>GO BACK</Text>
+                </TouchableOpacity>
+              </View>
+              <Button
+                title="Cancel"
+                onPress={() => {
+                  this.setState({ goBackOption: false });
+                }}
+              />
+            </View>
+          )
         )}
       </ScrollView>
     );
