@@ -133,7 +133,10 @@ export default class EditScreen extends React.Component {
   };
 
   handleBackPress = () => {
-    ToastAndroid.show("", ToastAndroid.SHORT);
+    ToastAndroid.show(
+      "Back button is disabled on this screen",
+      ToastAndroid.SHORT
+    );
     return true;
   };
 
