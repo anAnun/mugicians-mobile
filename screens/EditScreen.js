@@ -56,6 +56,7 @@ export default class EditScreen extends React.Component {
   }
 
   componentDidMount() {
+    BackHandler.addEventListener("hardwareBackPress", this.handleBackPress);
     setTimeout(() => {
       this.setState({ testWidth: "100%", testWidthSong: "50%" });
     }, 100);
@@ -132,7 +133,7 @@ export default class EditScreen extends React.Component {
 
   handleBackPress = () => {
     const { navigate } = this.props.navigation;
-    navigate("Edit");
+    navigate.goBack(null);
     return true;
   };
 
