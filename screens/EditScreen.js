@@ -131,9 +131,8 @@ export default class EditScreen extends React.Component {
   };
 
   handleBackPress = () => {
-    this.setState({
-      backDisable: true
-    });
+    const { navigate } = this.props.navigation;
+    navigate("Edit");
     return true;
   };
 
