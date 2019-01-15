@@ -115,8 +115,7 @@ export default class HomeScreen extends React.Component {
 
   newSong = () => {
     const { navigate } = this.props.navigation;
-    navigate("Create", { data: "" });
-    this.props.navigation.pop;
+    navigate("Create");
   };
 
   render() {
@@ -162,9 +161,11 @@ export default class HomeScreen extends React.Component {
         </ScrollView>
         {this.state.songsArr.length < 1 && (
           <View style={styles.tabBarInfoContainer}>
-            <Text style={styles.tabBarInfoText}>
-              Press Create to get started!
-            </Text>
+            <TouchableOpacity onPress={() => this.newSong()}>
+              <Text style={styles.tabBarInfoText}>
+                Press Create to get started!
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
       </View>
