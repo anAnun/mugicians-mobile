@@ -8,7 +8,7 @@
       "package": "com.ananun.mugicians",
       "versionCode": 3,
       "permissions": [
-        ""
+        "RECORD_AUDIO"
       ]
     },
     "platforms": [

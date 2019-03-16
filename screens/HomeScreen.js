@@ -186,13 +186,6 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 20
   },
-  // welcomeImage: {
-  //   width: 100,
-  //   height: 80,
-  //   resizeMode: "contain",
-  //   marginTop: 3,
-  //   marginLeft: -10
-  // },
   codeHighlightText: {
     color: "#068587",
     margin: 20,

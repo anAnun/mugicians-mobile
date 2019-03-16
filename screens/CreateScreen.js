@@ -83,7 +83,8 @@ export default class LinksScreen extends React.Component {
         name: songName,
         id: songId,
         lyrics: lyrics,
-        info: additionalInfo
+        info: additionalInfo,
+        audio: ""
       };
 
       AsyncStorage.setItem(idO, JSON.stringify(idObj), () => {
