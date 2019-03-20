@@ -1,8 +1,5 @@
 import React from "react";
 import {
-  Image,
-  Button,
-  Alert,
   Platform,
   ScrollView,
   StyleSheet,
@@ -12,8 +9,6 @@ import {
   AsyncStorage,
   BackHandler
 } from "react-native";
-import { WebBrowser } from "expo";
-import { MonoText } from "../components/StyledText";
 
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
@@ -56,34 +51,6 @@ export default class HomeScreen extends React.Component {
     const { navigate } = this.props.navigation;
     navigate("Home");
     return true;
-
-    // Alert.alert(
-    //   "Exit App",
-    //   "Exiting the application?",
-    //   [
-    //     {
-    //       text: "Cancel",
-    //       // onPress: () => {
-    //       //   BackHandler.removeEventListener(
-    //       //     "hardwareBackPress",
-    //       //     this.handleBackPress
-    //       //   );
-    //       // },
-    //       onPress: () => {
-    //         null;
-    //       },
-    //       style: "cancel"
-    //     },
-    //     {
-    //       text: "OK",
-    //       onPress: () => BackHandler.exitApp()
-    //     }
-    //   ],
-    //   {
-    //     cancelable: false
-    //   }
-    // );
-    // return true;
   };
 
   // clearAsyncStorage = async () => {
@@ -149,14 +116,6 @@ export default class HomeScreen extends React.Component {
             )}
             {/* <Button title="DELETE ALL" onPress={this.clearAsyncStorage} /> */}
             {songs}
-            {/* <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            /> */}
           </View>
         </ScrollView>
         {this.state.songsArr.length < 1 && (

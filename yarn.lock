@@ -2035,12 +2035,6 @@ expect@^23.6.0:
     jest-message-util "^23.4.0"
     jest-regex-util "^23.3.0"
 
-expo-ads-admob@~1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/expo-ads-admob/-/expo-ads-admob-1.1.0.tgz#817074620e55b930901fe20e9e41773ba85db97b"
-  dependencies:
-    prop-types "^15.6.2"
-
 expo-analytics-segment@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/expo-analytics-segment/-/expo-analytics-segment-1.1.0.tgz#d4f9591ebb542ea70e9d3ac23a5d97ead79dfb5d"
@@ -2272,7 +2266,6 @@ expo@^31.0.2:
     "@types/websql" "^0.0.27"
     babel-preset-expo "^5.0.0"
     cross-spawn "^6.0.5"
-    expo-ads-admob "~1.1.0"
     expo-analytics-segment "~1.1.0"
     expo-asset "~1.1.1"
     expo-barcode-scanner "~1.1.0"
