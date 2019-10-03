@@ -22,12 +22,6 @@ export default class EditScreen extends React.Component {
     const data = JSON.parse(this.props.navigation.state.params.data);
 
     this.state = {
-      backgroundColor1: "#CCC",
-      backgroundColor2: "#CCC",
-      backgroundColor3: "#CCC",
-      borderColor1: "#068587",
-      borderColor2: "#068587",
-      borderColor3: "#068587",
       songId: data.id,
       songLyrics: data.lyrics,
       songName: data.name,
@@ -165,48 +159,6 @@ export default class EditScreen extends React.Component {
     });
   };
 
-  onBlur1 = () => {
-    this.setState({
-      backgroundColor1: "#CCC",
-      borderColor1: "#068587"
-    });
-  };
-
-  onBlur2 = () => {
-    this.setState({
-      backgroundColor2: "#CCC",
-      borderColor2: "#068587"
-    });
-  };
-
-  onBlur3 = () => {
-    this.setState({
-      backgroundColor3: "#CCC",
-      borderColor3: "#068587"
-    });
-  };
-
-  onFocus1 = () => {
-    this.setState({
-      backgroundColor1: "#FFFFFF",
-      borderColor1: "#CCC"
-    });
-  };
-
-  onFocus2 = () => {
-    this.setState({
-      backgroundColor2: "#FFFFFF",
-      borderColor2: "#CCC"
-    });
-  };
-
-  onFocus3 = () => {
-    this.setState({
-      backgroundColor3: "#FFFFFF",
-      borderColor3: "#CCC"
-    });
-  };
-
   render() {
     return (
       <ScrollView style={styles.container}>
@@ -236,12 +188,10 @@ export default class EditScreen extends React.Component {
             )}
             <TextInput
               name="songName"
-              onBlur={() => this.onBlur1()}
-              onFocus={() => this.onFocus1()}
               style={{
-                borderColor: this.state.borderColor1,
+                borderColor: "#068587",
                 borderWidth: 2,
-                backgroundColor: this.state.backgroundColor1,
+                backgroundColor: "#C0C0C0",
                 width: this.state.testWidthSong
               }}
               value={this.state.songName}
@@ -252,15 +202,13 @@ export default class EditScreen extends React.Component {
             <Text style={styles.text}>Lyrics:</Text>
             <TextInput
               name="songLyrics"
-              onBlur={() => this.onBlur2()}
-              onFocus={() => this.onFocus2()}
               multiline={true}
               defaultValue={this.state.songLyrics}
               style={{
                 width: this.state.testWidth,
-                borderColor: this.state.borderColor2,
+                borderColor: "#068587",
                 borderWidth: 2,
-                backgroundColor: this.state.backgroundColor2
+                backgroundColor: "#C0C0C0"
               }}
               onChangeText={e => {
                 this.setState({ songLyrics: e });
@@ -270,14 +218,12 @@ export default class EditScreen extends React.Component {
             <Text style={styles.text}>Additional info</Text>
             <TextInput
               name="additionalInfo"
-              onBlur={() => this.onBlur3()}
-              onFocus={() => this.onFocus3()}
               multiline={true}
               style={{
                 width: this.state.testWidth,
-                borderColor: this.state.borderColor3,
+                borderColor: "#068587",
                 borderWidth: 2,
-                backgroundColor: this.state.backgroundColor3
+                backgroundColor: "#C0C0C0"
               }}
               defaultValue={this.state.songInfo}
               onChangeText={e => {

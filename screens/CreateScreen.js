@@ -18,12 +18,6 @@ export default class LinksScreen extends React.Component {
     this._isMounted = false;
     this.state = {
       // isShowingText: true,
-      backgroundColor1: "#CCC",
-      backgroundColor2: "#CCC",
-      backgroundColor3: "#CCC",
-      borderColor1: "#068587",
-      borderColor2: "#068587",
-      borderColor3: "#068587",
       songId: "",
       songLyrics: "",
       songName: "",
@@ -119,48 +113,6 @@ export default class LinksScreen extends React.Component {
     this.resetForm();
   };
 
-  onBlur1 = () => {
-    this.setState({
-      backgroundColor1: "#CCC",
-      borderColor1: "#068587"
-    });
-  };
-
-  onBlur2 = () => {
-    this.setState({
-      backgroundColor2: "#CCC",
-      borderColor2: "#068587"
-    });
-  };
-
-  onBlur3 = () => {
-    this.setState({
-      backgroundColor3: "#CCC",
-      borderColor3: "#068587"
-    });
-  };
-
-  onFocus1 = () => {
-    this.setState({
-      backgroundColor1: "#FFFFFF",
-      borderColor1: "#CCC"
-    });
-  };
-
-  onFocus2 = () => {
-    this.setState({
-      backgroundColor2: "#FFFFFF",
-      borderColor2: "#CCC"
-    });
-  };
-
-  onFocus3 = () => {
-    this.setState({
-      backgroundColor3: "#FFFFFF",
-      borderColor3: "#CCC"
-    });
-  };
-
   render() {
     if (!this.state.resetForm) {
       return (
@@ -176,12 +128,10 @@ export default class LinksScreen extends React.Component {
           )}
           <TextInput
             name="songName"
-            onBlur={() => this.onBlur1()}
-            onFocus={() => this.onFocus1()}
             style={{
-              borderColor: this.state.borderColor1,
+              borderColor: "#068587",
               borderWidth: 2,
-              backgroundColor: this.state.backgroundColor1,
+              backgroundColor: "#C0C0C0",
               width: this.state.testWidthSong
             }}
             onChangeText={e => {
@@ -193,13 +143,11 @@ export default class LinksScreen extends React.Component {
           <TextInput
             name="songLyrics"
             multiline={true}
-            onBlur={() => this.onBlur2()}
-            onFocus={() => this.onFocus2()}
             style={{
               width: this.state.testWidth,
-              borderColor: this.state.borderColor2,
+              borderColor: "#068587",
               borderWidth: 2,
-              backgroundColor: this.state.backgroundColor2
+              backgroundColor: "#C0C0C0"
             }}
             onChangeText={e => {
               this.setState({ songLyrics: e });
@@ -208,14 +156,12 @@ export default class LinksScreen extends React.Component {
           <Text style={styles.text}>Additional info</Text>
           <TextInput
             name="additionalInfo:"
-            onBlur={() => this.onBlur3()}
-            onFocus={() => this.onFocus3()}
             multiline={true}
             style={{
               width: this.state.testWidth,
-              borderColor: this.state.borderColor3,
+              borderColor: "#068587",
               borderWidth: 2,
-              backgroundColor: this.state.backgroundColor3
+              backgroundColor: "#C0C0C0"
             }}
             onChangeText={e => {
               this.setState({ additionalInfo: e });
