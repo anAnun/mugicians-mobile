@@ -10,7 +10,9 @@ import {
   TouchableOpacity,
   View,
   AsyncStorage,
-  BackHandler
+  BackHandler,
+  Clipboard,
+  ToastAndroid
 } from "react-native";
 import { WebBrowser } from "expo";
 import { MonoText } from "../components/StyledText";
@@ -23,7 +25,9 @@ export default class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      songsArr: []
+      songsArr: [],
+      completeArray: [],
+      copy: false
     };
 
     // if (!this.state.isFocused){
@@ -34,7 +38,7 @@ export default class HomeScreen extends React.Component {
     // setInterval(
     //   () =>
     //     this.setState(previousState => ({
-    //       isShowingText: !previousState.isShowingText
+    //       isShowingText: !previousState.i+sShowingText
     //     })),
     //   1000
     // );
@@ -99,6 +103,7 @@ export default class HomeScreen extends React.Component {
           let key = store[i][0];
           let song = this.state.songsArr;
           song.push(value);
+
           this.setState({
             songsArr: song
           });
@@ -106,6 +111,43 @@ export default class HomeScreen extends React.Component {
       });
     });
   };
+  copyToClipboard = () => {
+    this.item();
+    const arr = this.state.songsArr;
+    const arr2 = [];
+    for (let i = 0; i < arr.length; i++) {
+      arr2.push(
+        "Name: " +
+          JSON.parse(arr[i]).name +
+          "\n Lyrics: " +
+          JSON.parse(arr[i]).lyrics +
+          "\n Info: " +
+          JSON.parse(arr[i]).info +
+          "\n" +
+          "\n"
+      );
+    }
+    console.log(arr2);
+    Clipboard.setString(String(arr2));
+    ToastAndroid.show("Copied to clipboard", ToastAndroid.SHORT);
+    return true;
+  };
+  // Clipboard.getString(this.state.completeArray);
+  //   writeToClipboard = async () => {
+  //     await Clipboard.setString("this.state.completeArray");
+  //   };
+  //   // setContent = async () => {
+  //   //   const clipboardContent = await Clipboard.getString();
+  //   //   this.setState({ clipboardContent });
+  //   // };
+  //   console.log(
+  //     "COMPLETE ARRAY",
+  //     this.state.completeArray,
+  //     "SONGS ARRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
+  //     this.state.songsArr
+  //   );
+  //   this.setState({ copy: false });
+  // }
 
   handleSongClick = data => {
     BackHandler.removeEventListener("hardwareBackPress", this.handleBackPress);
@@ -139,6 +181,20 @@ export default class HomeScreen extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           <View style={styles.welcomeContainer}>
+            <View style={styles.copyButton}>
+              <TouchableOpacity onPress={() => this.copyToClipboard()}>
+                <Text style={styles.tabBarInfoText}>
+                  Copy all data to clipboard
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {/* <View style={styles.copyButton}>
+              <TouchableOpacity onPress={() => this.copyToClipboard()}>
+                <Text style={styles.tabBarInfoText}>
+                  Copy all data to clipboard
+                </Text>
+              </TouchableOpacity>
+            </View> */}
             {this.state.songsArr.length < 1 && (
               <View style={styles.getStartedText}>
                 <Text style={styles.codeHighlightText}>
@@ -149,14 +205,7 @@ export default class HomeScreen extends React.Component {
             )}
             {/* <Button title="DELETE ALL" onPress={this.clearAsyncStorage} /> */}
             {songs}
-            {/* <Image
-              source={
-                __DEV__
-                  ? require('../assets/images/robot-dev.png')
-                  : require('../assets/images/robot-prod.png')
-              }
-              style={styles.welcomeImage}
-            /> */}
+            <View style={styles.space} />
           </View>
         </ScrollView>
         {this.state.songsArr.length < 1 && (
@@ -233,5 +282,28 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: "#c0c0c0",
     textAlign: "center"
+  },
+  copyButton: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      android: {
+        elevation: 20
+      }
+    }),
+    alignItems: "center",
+    backgroundColor: "grey",
+    paddingVertical: 20
+  },
+  space: {
+    padding: 40
   }
 });
