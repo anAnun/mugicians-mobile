@@ -127,7 +127,6 @@ export default class HomeScreen extends React.Component {
           "\n"
       );
     }
-    console.log(arr2);
     Clipboard.setString(String(arr2));
     ToastAndroid.show("Copied to clipboard", ToastAndroid.SHORT);
     return true;
